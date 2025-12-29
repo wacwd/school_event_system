@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>校园活动秒杀系统</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; }
+        #status { margin-top: 20px; font-weight: bold; color: red; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>校园十佳歌手大赛 - 在线抢票</h1>
+    <p>剩余名额：<span id="stock">请查看Redis</span></p>
+    
+    <input type="number" id="userId" placeholder="输入你的学号/ID" />
+    <button onclick="enroll()">立即报名</button>
+    
+    <div id="status"></div>
+
+    <script>
+        async function enroll() {
+            const userId = document.getElementById('userId').value;
+            if(!userId) return alert('请输入学号');
+
+            const res = await fetch('http://localhost:3000/api/enroll', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userId, eventId: 1 })
+            });
+            
+            const data = await res.json();
+            document.getElementById('status').innerText = data.msg;
+        }
+    </script>
+</body>
+</html>
